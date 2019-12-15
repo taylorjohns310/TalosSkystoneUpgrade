@@ -58,6 +58,8 @@ public class chickenNugget extends OpMode
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftMotor = null;
     private DcMotor rightMotor = null;
+    private DcMotor leftMotorBack = null;
+    private DcMotor rightMotorBack = null;
     Servo snowPlow = null;
     Servo paddle = null;
     Servo dumper = null;
@@ -74,6 +76,8 @@ public class chickenNugget extends OpMode
         // step (using the FTC Robot Controller app on the phone).
         leftMotor  = hardwareMap.get(DcMotor.class, "left_drive");
         rightMotor = hardwareMap.get(DcMotor.class, "right_drive");
+        leftMotorBack = hardwareMap.get(DcMotor.class, "leftMotorBack");
+        rightMotorBack = hardwareMap.get(DcMotor.class, "rightMotorBack");
         snowPlow = hardwareMap.servo.get("snowPlow");
         paddle = hardwareMap.servo.get("paddle");
         dumper = hardwareMap.servo.get("dumper");
@@ -82,6 +86,8 @@ public class chickenNugget extends OpMode
         // Reverse the motor that runs backwards when connected directly to the battery
         leftMotor.setDirection(DcMotor.Direction.FORWARD);
         rightMotor.setDirection(DcMotor.Direction.REVERSE);
+        leftMotorBack.setDirection(DcMotor.Direction.FORWARD);
+        rightMotorBack.setDirection(DcMotor.Direction.REVERSE);
         snowPlow.setPosition(0);
         paddle.setPosition(0);
         dumper.setPosition(0);
@@ -114,24 +120,27 @@ public class chickenNugget extends OpMode
         double leftPower;
         double rightPower;
 
+
         // Choose to drive using either Tank Mode, or POV Mode
         // Comment out the method that's not used.  The default below is POV.
 
         // POV Mode uses left stick to go forward, and right stick to turn.
         // - This uses basic math to combine motions and is easier to drive straight.
-        double drive = gamepad1.left_stick_y;
-        double turn  = -gamepad1.right_stick_x;
-        leftPower    = Range.clip(drive + turn, -.5, .5) ;
-        rightPower   = Range.clip(drive - turn, -.5, .5) ;
+        //double drive = gamepad1.left_stick_y;
+        //double turn  = -gamepad1.right_stick_x;
+        //leftPower    = Range.clip(drive + turn, -.5, .5) ;
+        //rightPower   = Range.clip(drive - turn, -.5, .5) ;
 
         // Tank Mode uses one stick to control each wheel.
         // - This requires no math, but it is hard to drive forward slowly and keep straight.
-        // leftPower  = -gamepad1.left_stick_y ;
-        // rightPower = -gamepad1.right_stick_y ;
+         leftPower  = -gamepad1.left_stick_y ;
+         rightPower = -gamepad1.right_stick_y ;
 
         // Send calculated power to wheels
-        leftMotor.setPower(leftPower);
-        rightMotor.setPower(rightPower);
+        leftMotor.setPower(leftPower/1.5);
+        leftMotorBack.setPower(leftPower/1.5);
+        rightMotor.setPower(rightPower/1.5);
+        rightMotorBack.setPower(rightPower/1.5);
 
 
         if(gamepad1.right_bumper) {
