@@ -34,7 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
+//import com.qualcomm.robotcore.util.Range;
 
 /**
  * This file contains an example of an iterative (Non-Linear) "OpMode".
@@ -56,13 +56,14 @@ public class chickenNugget extends OpMode
 {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftMotor = null;
-    private DcMotor rightMotor = null;
-    private DcMotor leftMotorBack = null;
-    private DcMotor rightMotorBack = null;
+    private DcMotor leftFront = null;
+    private DcMotor rightFront = null;
+    private DcMotor leftBack = null;
+    private DcMotor rightBack = null;
     Servo snowPlow = null;
     Servo paddle = null;
     Servo dumper = null;
+
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -74,20 +75,20 @@ public class chickenNugget extends OpMode
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        leftMotor  = hardwareMap.get(DcMotor.class, "left_drive");
-        rightMotor = hardwareMap.get(DcMotor.class, "right_drive");
-        leftMotorBack = hardwareMap.get(DcMotor.class, "leftMotorBack");
-        rightMotorBack = hardwareMap.get(DcMotor.class, "rightMotorBack");
+        leftFront  = hardwareMap.get(DcMotor.class, "left_front");
+        rightFront = hardwareMap.get(DcMotor.class, "right_front");
+        leftBack = hardwareMap.get(DcMotor.class, "left_back");
+        rightBack = hardwareMap.get(DcMotor.class, "right_back");
         snowPlow = hardwareMap.servo.get("snowPlow");
         paddle = hardwareMap.servo.get("paddle");
         dumper = hardwareMap.servo.get("dumper");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        leftMotor.setDirection(DcMotor.Direction.FORWARD);
-        rightMotor.setDirection(DcMotor.Direction.REVERSE);
-        leftMotorBack.setDirection(DcMotor.Direction.FORWARD);
-        rightMotorBack.setDirection(DcMotor.Direction.REVERSE);
+        leftBack.setDirection(DcMotor.Direction.FORWARD);
+        leftFront.setDirection(DcMotor.Direction.FORWARD);
+        rightFront.setDirection(DcMotor.Direction.REVERSE);
+        rightBack.setDirection(DcMotor.Direction.REVERSE);
         snowPlow.setPosition(0);
         paddle.setPosition(0);
         dumper.setPosition(0);
@@ -117,8 +118,10 @@ public class chickenNugget extends OpMode
     @Override
     public void loop() {
         // Setup a variable for each drive wheel to save power level for telemetry
-        double leftPower;
-        double rightPower;
+        //double frontLeftPower;
+        //double rearLeftPower;
+        //double frontRightPower;
+        //double rearRightPower;
 
 
         // Choose to drive using either Tank Mode, or POV Mode
@@ -126,35 +129,66 @@ public class chickenNugget extends OpMode
 
         // POV Mode uses left stick to go forward, and right stick to turn.
         // - This uses basic math to combine motions and is easier to drive straight.
-        //double drive = gamepad1.left_stick_y;
-        //double turn  = -gamepad1.right_stick_x;
-        //leftPower    = Range.clip(drive + turn, -.5, .5) ;
-        //rightPower   = Range.clip(drive - turn, -.5, .5) ;
+        double drive = gamepad1.left_stick_y;
+        double turn  = -gamepad1.right_stick_x;
+        double frontLeftPower;
+        double rearLeftPower;
+        double rearRightPower;
+        double frontRightPower;
+
+        //double drive = gamepad1.left_stick_y * 0.5;
+        //double turn  = gamepad1.right_stick_x;
 
         // Tank Mode uses one stick to control each wheel.
         // - This requires no math, but it is hard to drive forward slowly and keep straight.
-         leftPower  = -gamepad1.left_stick_y ;
-         rightPower = -gamepad1.right_stick_y ;
+         //leftPower  = -gamepad1.left_stick_y ;
+         //rightPower = -gamepad1.right_stick_y ;
+
+        frontLeftPower = drive - turn;
+        rearLeftPower = drive - turn;
+        frontRightPower = drive + turn;
+        rearRightPower = drive + turn;
+
+
+        frontLeftPower += -gamepad1.right_trigger;
+        rearLeftPower += gamepad1.right_trigger;
+        rearRightPower += -gamepad1.right_trigger;
+        frontRightPower += gamepad1.right_trigger;
+
+        frontLeftPower += gamepad1.left_trigger;
+        rearLeftPower += -gamepad1.left_trigger;
+        frontRightPower += -gamepad1.left_trigger;
+        rearRightPower += gamepad1.left_trigger;
+
+        //rightBack.setPower(rearRightPower);
+        //leftBack.setPower(rearLeftPower);
+        //leftFront.setPower(frontLeftPower);
+        //rightFront.setPower(frontRightPower);
 
         // Send calculated power to wheels
-        leftMotor.setPower(leftPower/1.5);
-        leftMotorBack.setPower(leftPower/1.5);
-        rightMotor.setPower(rightPower/1.5);
-        rightMotorBack.setPower(rightPower/1.5);
+        rightFront.setPower(rearRightPower/1.5);
+        rightBack.setPower(rearLeftPower/1.5);
+        leftBack.setPower(frontRightPower/1.5);
+        leftFront.setPower(frontLeftPower/1.5);
 
 
-        if(gamepad1.right_bumper) {
+        if(gamepad2.right_bumper) {
             snowPlow.setPosition(1);
         }
-        else if (gamepad1.left_bumper)  {
+        else if (gamepad2.left_bumper)  {
             snowPlow.setPosition(0);
         }
 
+        //if(gamepad1.right_trigger != 0 || gamepad1.left_trigger != 0)
+        //{
+            //jack.setStrafeSpeed(gamepad1.left_trigger - gamepad1.right_trigger);
+        //}
 
-        if(gamepad1.x) {
+
+        if(gamepad2.x) {
             paddle.setPosition(1);
         }
-        else if (gamepad1.y)  {
+        else if (gamepad2.y)  {
             paddle.setPosition(0);
         }
 
@@ -166,8 +200,9 @@ public class chickenNugget extends OpMode
         }
 
         // Show the elapsed game time and wheel power.
+        //telemetry.addData("Status", "Run Time: " + runtime.toString());
+        //telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
         telemetry.addData("Status", "Run Time: " + runtime.toString());
-        telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
     }
 
     /*
