@@ -129,8 +129,8 @@ public class chickenNugget extends OpMode
 
         // POV Mode uses left stick to go forward, and right stick to turn.
         // - This uses basic math to combine motions and is easier to drive straight.
-        double drive = gamepad1.left_stick_y;
-        double turn  = -gamepad1.right_stick_x;
+        double drive = gamepad1.left_stick_y * .75;
+        double turn  = gamepad1.right_stick_x;
         double frontLeftPower;
         double rearLeftPower;
         double rearRightPower;
@@ -166,10 +166,10 @@ public class chickenNugget extends OpMode
         //rightFront.setPower(frontRightPower);
 
         // Send calculated power to wheels
-        rightFront.setPower(rearRightPower/1.5);
-        rightBack.setPower(rearLeftPower/1.5);
-        leftBack.setPower(frontRightPower/1.5);
-        leftFront.setPower(frontLeftPower/1.5);
+        rightFront.setPower(frontRightPower);
+        rightBack.setPower(rearRightPower);
+        leftBack.setPower(rearLeftPower);
+        leftFront.setPower(frontLeftPower);
 
 
         if(gamepad2.right_bumper) {
@@ -202,6 +202,8 @@ public class chickenNugget extends OpMode
         // Show the elapsed game time and wheel power.
         //telemetry.addData("Status", "Run Time: " + runtime.toString());
         //telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+        telemetry.addData("Motors", "front left (%.2f), front right (%.2f)  rear right (%.2f), rear right (%.2f) ",
+                frontLeftPower, frontRightPower, rearLeftPower, rearRightPower);
         telemetry.addData("Status", "Run Time: " + runtime.toString());
     }
 
