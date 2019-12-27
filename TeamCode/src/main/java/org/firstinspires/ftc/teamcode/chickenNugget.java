@@ -172,10 +172,10 @@ public class chickenNugget extends OpMode
         leftFront.setPower(frontLeftPower);
 
 
-        if(gamepad2.right_bumper) {
+        if(gamepad1.right_bumper) {
             snowPlow.setPosition(1);
         }
-        else if (gamepad2.left_bumper)  {
+        else if (gamepad1.left_bumper)  {
             snowPlow.setPosition(0);
         }
 
@@ -185,10 +185,10 @@ public class chickenNugget extends OpMode
         //}
 
 
-        if(gamepad2.x) {
+        if(gamepad1.x) {
             paddle.setPosition(1);
         }
-        else if (gamepad2.y)  {
+        else if (gamepad1.y)  {
             paddle.setPosition(0);
         }
 
