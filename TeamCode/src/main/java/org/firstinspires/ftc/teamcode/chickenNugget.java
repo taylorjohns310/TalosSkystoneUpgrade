@@ -63,6 +63,8 @@ public class chickenNugget extends OpMode
     Servo snowPlow = null;
     Servo paddle = null;
     Servo dumper = null;
+    Servo hook1 = null;
+    Servo hook2 = null;
 
 
     /*
@@ -82,6 +84,9 @@ public class chickenNugget extends OpMode
         snowPlow = hardwareMap.servo.get("snowPlow");
         paddle = hardwareMap.servo.get("paddle");
         dumper = hardwareMap.servo.get("dumper");
+        hook1 = hardwareMap.servo.get("hook1");
+        hook2 = hardwareMap.servo.get("hook2");
+
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -92,6 +97,8 @@ public class chickenNugget extends OpMode
         snowPlow.setPosition(0);
         paddle.setPosition(0);
         dumper.setPosition(0);
+        hook1.setPosition(0);
+        hook2.setPosition(0);
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
@@ -129,8 +136,8 @@ public class chickenNugget extends OpMode
 
         // POV Mode uses left stick to go forward, and right stick to turn.
         // - This uses basic math to combine motions and is easier to drive straight.
-        double drive = gamepad1.left_stick_y * .75;
-        double turn  = gamepad1.right_stick_x;
+        double drive = gamepad1.left_stick_y /2;
+        double turn  = gamepad1.right_stick_x/2;
         double frontLeftPower;
         double rearLeftPower;
         double rearRightPower;
@@ -197,6 +204,16 @@ public class chickenNugget extends OpMode
         }
         else if (gamepad1.b)  {
             dumper.setPosition(0);
+        }
+
+        if(gamepad1.dpad_up){
+            hook1.setPosition(1);
+            hook2.setPosition(0);
+
+        } else if (gamepad1.dpad_down){
+
+            hook1.setPosition(0);
+            hook2.setPosition(1);
         }
 
         // Show the elapsed game time and wheel power.

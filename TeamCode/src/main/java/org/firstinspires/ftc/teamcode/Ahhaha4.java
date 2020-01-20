@@ -12,8 +12,8 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Created by colethompson on 10/27/17.
  */
 
-@Autonomous(name="go over the line for blue")
-public class Ahhaha3 extends LinearOpMode {
+@Autonomous(name="go over the line for red")
+public class Ahhaha4 extends LinearOpMode {
     private DcMotor leftFront = null;
     private DcMotor rightFront = null;
     private DcMotor leftBack = null;
@@ -48,7 +48,7 @@ public class Ahhaha3 extends LinearOpMode {
         //Drive forward and strafe left
         DriveForward(.5);
         Thread.sleep(1000);
-        strafeLeft(1);
+        strafeRight(1);
         Thread.sleep(1000);
 
     }
