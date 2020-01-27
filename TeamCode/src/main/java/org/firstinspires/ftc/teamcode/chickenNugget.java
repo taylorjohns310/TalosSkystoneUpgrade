@@ -60,9 +60,9 @@ public class chickenNugget extends OpMode
     private DcMotor rightFront = null;
     private DcMotor leftBack = null;
     private DcMotor rightBack = null;
-    Servo snowPlow = null;
-    Servo paddle = null;
-    Servo dumper = null;
+    Servo servo1 = null;
+    Servo servo2 = null;
+    Servo servo3 = null;
     Servo hook1 = null;
     Servo hook2 = null;
 
@@ -81,9 +81,9 @@ public class chickenNugget extends OpMode
         rightFront = hardwareMap.get(DcMotor.class, "right_front");
         leftBack = hardwareMap.get(DcMotor.class, "left_back");
         rightBack = hardwareMap.get(DcMotor.class, "right_back");
-        snowPlow = hardwareMap.servo.get("snowPlow");
-        paddle = hardwareMap.servo.get("paddle");
-        dumper = hardwareMap.servo.get("dumper");
+        servo1 = hardwareMap.servo.get("servo1");
+        servo2 = hardwareMap.servo.get("servo2");
+        servo3 = hardwareMap.servo.get("servo3");
         hook1 = hardwareMap.servo.get("hook1");
         hook2 = hardwareMap.servo.get("hook2");
 
@@ -94,9 +94,9 @@ public class chickenNugget extends OpMode
         leftFront.setDirection(DcMotor.Direction.FORWARD);
         rightFront.setDirection(DcMotor.Direction.REVERSE);
         rightBack.setDirection(DcMotor.Direction.REVERSE);
-        snowPlow.setPosition(0);
-        paddle.setPosition(0);
-        dumper.setPosition(0);
+        servo1.setPosition(0);
+        servo2.setPosition(0);
+        servo3.setPosition(0);
         hook1.setPosition(0);
         hook2.setPosition(0);
 
@@ -180,10 +180,10 @@ public class chickenNugget extends OpMode
 
 
         if(gamepad1.right_bumper) {
-            snowPlow.setPosition(1);
+            servo1.setPosition(1);
         }
         else if (gamepad1.left_bumper)  {
-            snowPlow.setPosition(0);
+            servo1.setPosition(0);
         }
 
         //if(gamepad1.right_trigger != 0 || gamepad1.left_trigger != 0)
@@ -193,17 +193,18 @@ public class chickenNugget extends OpMode
 
 
         if(gamepad1.x) {
-            paddle.setPosition(1);
+            servo2.setPosition(1);
         }
         else if (gamepad1.y)  {
-            paddle.setPosition(0);
+            servo2.setPosition(0);
         }
 
+        //next
         if(gamepad1.a) {
-            dumper.setPosition(1);
+            servo3.setPosition(1);
         }
         else if (gamepad1.b)  {
-            dumper.setPosition(0);
+            servo3.setPosition(0);
         }
 
         if(gamepad1.dpad_up){
