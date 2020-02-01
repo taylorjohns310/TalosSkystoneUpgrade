@@ -65,6 +65,7 @@ public class chickenNugget extends OpMode
     Servo servo3 = null;
     Servo hook1 = null;
     Servo hook2 = null;
+    Servo gripper = null;
 
 
     /*
@@ -86,6 +87,7 @@ public class chickenNugget extends OpMode
         servo3 = hardwareMap.servo.get("servo3");
         hook1 = hardwareMap.servo.get("hook1");
         hook2 = hardwareMap.servo.get("hook2");
+        gripper = hardwareMap.servo.get("gripper");
 
 
         // Most robots need the motor on one side to be reversed to drive forward
@@ -99,6 +101,7 @@ public class chickenNugget extends OpMode
         servo3.setPosition(0);
         hook1.setPosition(0);
         hook2.setPosition(0);
+        gripper.setPosition(0);
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
@@ -179,10 +182,10 @@ public class chickenNugget extends OpMode
         leftFront.setPower(frontLeftPower);
 
 
-        if(gamepad1.right_bumper) {
+        if(gamepad1.dpad_up) {
             servo1.setPosition(1);
         }
-        else if (gamepad1.left_bumper)  {
+        else if (gamepad1.dpad_down)  {
             servo1.setPosition(0);
         }
 
@@ -192,31 +195,40 @@ public class chickenNugget extends OpMode
         //}
 
 
-        if(gamepad1.x) {
+        if(gamepad1.a) {
             servo2.setPosition(1);
         }
-        else if (gamepad1.y)  {
+        else if (gamepad1.b)  {
             servo2.setPosition(0);
         }
 
         //next
-        if(gamepad1.a) {
+        if(gamepad1.x) {
             servo3.setPosition(1);
         }
-        else if (gamepad1.b)  {
+        else if (gamepad1.y)  {
             servo3.setPosition(0);
         }
 
-        if(gamepad1.dpad_up){
+        if(gamepad1.right_bumper){
             hook1.setPosition(1);
             hook2.setPosition(0);
 
-        } else if (gamepad1.dpad_down){
+        } else if (gamepad1.left_bumper){
 
             hook1.setPosition(0);
             hook2.setPosition(1);
         }
 
+
+        if(gamepad1.left_stick_button){
+
+            gripper.setPosition(1);
+
+        }else if (gamepad1.right_stick_button){
+
+            gripper.setPosition(0);
+        }
         // Show the elapsed game time and wheel power.
         //telemetry.addData("Status", "Run Time: " + runtime.toString());
         //telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
