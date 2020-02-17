@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Created by colethompson on 10/27/17.
  */
 
-@Autonomous(name="Ahhaha Blue")
+@Autonomous(name="Ahhaha Red")
 public class Ahhaha extends LinearOpMode {
     private DcMotor leftFront = null;
     private DcMotor rightFront = null;

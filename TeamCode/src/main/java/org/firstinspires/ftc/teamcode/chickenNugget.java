@@ -34,6 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Range;
 //import com.qualcomm.robotcore.util.Range;
 
 /**
@@ -60,6 +61,7 @@ public class chickenNugget extends OpMode
     private DcMotor rightFront = null;
     private DcMotor leftBack = null;
     private DcMotor rightBack = null;
+    private DcMotor arm = null;
     Servo servo1 = null;
     Servo servo2 = null;
     Servo servo3 = null;
@@ -82,6 +84,7 @@ public class chickenNugget extends OpMode
         rightFront = hardwareMap.get(DcMotor.class, "right_front");
         leftBack = hardwareMap.get(DcMotor.class, "left_back");
         rightBack = hardwareMap.get(DcMotor.class, "right_back");
+        arm = hardwareMap.get(DcMotor.class, "arm");
         servo1 = hardwareMap.servo.get("servo1");
         servo2 = hardwareMap.servo.get("servo2");
         servo3 = hardwareMap.servo.get("servo3");
@@ -96,6 +99,7 @@ public class chickenNugget extends OpMode
         leftFront.setDirection(DcMotor.Direction.FORWARD);
         rightFront.setDirection(DcMotor.Direction.REVERSE);
         rightBack.setDirection(DcMotor.Direction.REVERSE);
+        arm.setDirection(DcMotor.Direction.FORWARD);
         servo1.setPosition(0);
         servo2.setPosition(0);
         servo3.setPosition(0);
@@ -141,6 +145,7 @@ public class chickenNugget extends OpMode
         // - This uses basic math to combine motions and is easier to drive straight.
         double drive = gamepad1.left_stick_y /2;
         double turn  = gamepad1.right_stick_x/2;
+        double chicken = gamepad2.right_stick_x/1.5;
         double frontLeftPower;
         double rearLeftPower;
         double rearRightPower;
@@ -180,6 +185,7 @@ public class chickenNugget extends OpMode
         rightBack.setPower(rearRightPower);
         leftBack.setPower(rearLeftPower);
         leftFront.setPower(frontLeftPower);
+        arm.setPower(chicken);
 
 
         if(gamepad1.dpad_up) {
@@ -193,6 +199,12 @@ public class chickenNugget extends OpMode
         //{
             //jack.setStrafeSpeed(gamepad1.left_trigger - gamepad1.right_trigger);
         //}
+        if(gamepad2.right_bumper){
+            gripper.setPosition(1);
+        }
+        else if (gamepad2.left_bumper){
+            gripper.setPosition(0);
+        }
 
 
         if(gamepad1.a) {
@@ -220,15 +232,6 @@ public class chickenNugget extends OpMode
             hook2.setPosition(1);
         }
 
-
-        if(gamepad1.left_stick_button){
-
-            gripper.setPosition(1);
-
-        }else if (gamepad1.right_stick_button){
-
-            gripper.setPosition(0);
-        }
         // Show the elapsed game time and wheel power.
         //telemetry.addData("Status", "Run Time: " + runtime.toString());
         //telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
